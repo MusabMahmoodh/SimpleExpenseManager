@@ -27,7 +27,7 @@ import android.support.v7.widget.Toolbar;
 
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.R;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
-import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.InMemoryDemoExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.PersistentExpenseManager;
 
 public class MainActivity extends AppCompatActivity {
     private ExpenseManager expenseManager;
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +66,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        /***  Begin generating dummy data for In-Memory implementation  ***/
-        expenseManager = new InMemoryDemoExpenseManager();
-        /*** END ***/
+        expenseManager = new PersistentExpenseManager(this);
     }
 
     /**
@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -86,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return ManageExpensesFragment.newInstance(expenseManager);
-                case 1:
-                    return AddAccountFragment.newInstance(expenseManager);
                 case 2:
                     return ExpenseLogsFragment.newInstance(expenseManager);
+                case 1:
+                    return AddAccountFragment.newInstance(expenseManager);
                 default:
                     return ManageExpensesFragment.newInstance(expenseManager);
             }
@@ -106,10 +108,10 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return getString(R.string.label_manage);
-                case 1:
-                    return getString(R.string.label_add_account);
                 case 2:
-                    return getString(R.string.label_logs);
+                    return "Logs";
+                case 1:
+                    return "Add Account";
                 default:
                     return getString(R.string.label_manage);
             }
